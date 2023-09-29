@@ -1,3 +1,3 @@
 export interface Base64Plugin {
-  echo(options: { value: string }): Promise<{ value: string }>;
+  getBase64(options: { path: string }): Promise<{ base64: string }>;
 }

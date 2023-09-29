@@ -11,12 +11,23 @@ public class Base64Plugin extends Plugin {
 
     private Base64 implementation = new Base64();
 
-    @PluginMethod
-    public void echo(PluginCall call) {
-        String value = call.getString("value");
 
-        JSObject ret = new JSObject();
-        ret.put("value", implementation.echo(value));
-        call.resolve(ret);
+    @PluginMethod
+    public void getBase64(PluginCall call) {
+        Base64Callback resultCallback = new Base64Callback() {
+            @Override
+            public void onDone(String base64) {
+                call.resolve(new JSObject().put("base64", base64));
+            }
+
+            @Override
+            public void onError(String message) {
+                call.reject(message);
+            }
+        };
+        String path = call.getString("path");
+
+        implementation.getBase64(path, resultCallback);
     }
+
 }
